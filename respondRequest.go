@@ -24,7 +24,8 @@ func main() {
 	// log.Fatal(http.ListenAndServe(":3500", nil))
 
 	//comment all above to test the following
-	test3()
+	router := test3()
+	log.Fatal(http.ListenAndServe(":3500", router))
 
 }
 
@@ -70,9 +71,9 @@ func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	fmt.Fprintf(w, "hello, %s!\n", ps.ByName("name"))
 }
 
-func test3() {
+func test3() *httprouter.Router {
 	router := httprouter.New()
 	router.GET("/wow/", Index)
 	router.GET("/hi/:name", Hello)
-	log.Fatal(http.ListenAndServe(":3500", router))
+	return router
 }
