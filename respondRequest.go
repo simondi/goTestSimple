@@ -5,6 +5,8 @@ import (
 	"html"
 	"log"
 	"net/http"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 /*
@@ -12,12 +14,18 @@ import (
 	1. http://localhost:3500/foo   OR  http://localhost:3500/hello
 	2. http://localhost:3500/
 	3. http://localhost:3500/bar
+	4. http://localhost:3500/hi/simon
 */
 func main() {
-	test0()
-	test1()
-	test2()
-	log.Fatal(http.ListenAndServe(":3500", nil))
+	// Cannot listen to both
+	// test0()
+	// test1()
+	// test2()
+	// log.Fatal(http.ListenAndServe(":3500", nil))
+
+	//comment all above to test the following
+	test3()
+
 }
 
 //Teat0: using handler
@@ -51,4 +59,20 @@ func test2() {
 		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 	})
 
+}
+
+//Test3: LIsten to http Router httprouter after specyfing router
+func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	fmt.Fprint(w, "Welcome!\n")
+}
+
+func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	fmt.Fprintf(w, "hello, %s!\n", ps.ByName("name"))
+}
+
+func test3() {
+	router := httprouter.New()
+	router.GET("/wow/", Index)
+	router.GET("/hi/:name", Hello)
+	log.Fatal(http.ListenAndServe(":3500", router))
 }
