@@ -20,7 +20,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":3500", nil))
 }
 
-//using handler
+//Teat0: using handler
 type FooHandler struct{}
 
 func (h *FooHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -32,7 +32,7 @@ func test0() {
 	http.Handle("/hello", &foo)
 }
 
-//using handleFunc for write
+//Test1: using handleFunc for write
 func test1() {
 
 	http.HandleFunc("/", HelloHandler)
@@ -43,7 +43,7 @@ func HelloHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello, there\n")
 }
 
-//using handleFunc for read and write
+//Test2: using handleFunc for read and write
 func test2() {
 	//http.Handle("/foo", fooHandler)
 
